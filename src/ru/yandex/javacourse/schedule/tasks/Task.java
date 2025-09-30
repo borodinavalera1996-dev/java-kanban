@@ -1,21 +1,21 @@
 package ru.yandex.javacourse.schedule.tasks;
 
+import ru.yandex.javacourse.schedule.tasks.util.GeneratorId;
+
 import java.util.Objects;
 
 public class Task {
+
+	static GeneratorId generatorId = new GeneratorId();
+
 	protected int id;
 	protected String name;
 	protected TaskStatus status;
 	protected String description;
 
-	public Task(int id, String name, String description, TaskStatus status) {
-		this.id = id;
-		this.name = name;
-		this.description = description;
-		this.status = status;
-	}
 
 	public Task(String name, String description, TaskStatus status) {
+		this.id = generatorId.getNewId();
 		this.name = name;
 		this.description = description;
 		this.status = status;
@@ -23,10 +23,6 @@ public class Task {
 
 	public int getId() {
 		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public String getName() {
