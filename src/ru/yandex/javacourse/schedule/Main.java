@@ -26,9 +26,9 @@ public class Main {
 		final int epicId1 = manager.addNewEpic(epic1);
 		final int epicId2 = manager.addNewEpic(epic2);
 
-		Subtask subtask1 = new Subtask("Subtask #1-1", "Subtask1 description", NEW, epicId1);
-		Subtask subtask2 = new Subtask("Subtask #2-1", "Subtask1 description", NEW, epicId1);
-		Subtask subtask3 = new Subtask("Subtask #3-2", "Subtask1 description", DONE, epicId2);
+		Subtask subtask1 = new Subtask("Subtask #1-1", "Subtask1 description", NEW, epic1);
+		Subtask subtask2 = new Subtask("Subtask #2-1", "Subtask1 description", NEW, epic1);
+		Subtask subtask3 = new Subtask("Subtask #3-2", "Subtask1 description", DONE, epic2);
 		manager.addNewSubtask(subtask1);
 		final Integer subtaskId2 = manager.addNewSubtask(subtask2);
 		final Integer subtaskId3 = manager.addNewSubtask(subtask3);
