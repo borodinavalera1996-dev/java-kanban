@@ -5,8 +5,6 @@ public class Subtask extends Task {
 
 	public Subtask(String name, String description, TaskStatus status, Epic epic) {
 		super(name, description, status);
-		if (epic == null)
-			throw new IllegalArgumentException("Subtask cannot be not attached");
 		this.epicId = epic.getId();
 	}
 

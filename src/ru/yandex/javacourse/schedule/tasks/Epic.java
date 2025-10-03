@@ -2,12 +2,10 @@ package ru.yandex.javacourse.schedule.tasks;
 
 import static ru.yandex.javacourse.schedule.tasks.TaskStatus.NEW;
 
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
+import java.util.*;
 
 public class Epic extends Task {
-	protected LinkedHashSet<Subtask> subtasks = new LinkedHashSet<>();
+	protected Set<Subtask> subtasks = new HashSet<>();
 
 	public Epic(String name, String description) {
 		super(name, description, NEW);

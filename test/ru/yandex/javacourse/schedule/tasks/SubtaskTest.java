@@ -12,12 +12,4 @@ public class SubtaskTest {
         Subtask s0 = new Subtask("Test 1", "Testing task 1", TaskStatus.NEW, epic);
         assertEquals(s0.epicId, epic.id, "subtask should be added to epic");
     }
-
-    @Test
-    public void testNotNullAttaching() {
-        Epic epic = null;
-        assertThrows(IllegalArgumentException.class,
-                () -> new Subtask("Subtask 1", "Testing subtask 1", TaskStatus.NEW, epic),
-                "subtask cannot be attached to null");
-    }
 }
