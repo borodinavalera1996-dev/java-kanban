@@ -5,33 +5,27 @@ import static ru.yandex.javacourse.schedule.tasks.TaskStatus.NEW;
 import java.util.*;
 
 public class Epic extends Task {
-	protected Set<Subtask> subtasks = new HashSet<>();
+	protected Set<Integer> subtasks = new HashSet<>();
 
 	public Epic(String name, String description) {
 		super(name, description, NEW);
 	}
 
-	public void addSubtaskId(Subtask subtask) {
+	public void addSubtaskId(Integer subtask) {
+		if (getId() == subtask)
+			throw new IllegalArgumentException("Epic cannot be added to epic like subtask for itself");
 		subtasks.add(subtask);
 	}
 
-	public List<Subtask> getSubtasks() {
-		return new ArrayList<>(subtasks);
-	}
-
 	public List<Integer> getSubtaskIds() {
-		List<Integer> subtaskIds = new ArrayList<>();
-		for (Subtask subtask : subtasks) {
-			subtaskIds.add(subtask.id);
-		}
-		return subtaskIds;
+		return new ArrayList<>(subtasks);
 	}
 
 	public void cleanSubtaskIds() {
 		subtasks.clear();
 	}
 
-	public void removeSubtask(Subtask subtask) {
+	public void removeSubtask(Integer subtask) {
 		subtasks.remove(subtask);
 	}
 

@@ -97,7 +97,7 @@ public class InMemoryTaskManagerTest {
         manager.deleteSubtask(s1.getId());
         assertEquals(1, manager.getEpics().size(), "epic should be added");
         assertEquals(1, manager.getSubtasks().size(), "subtask should be removed");
-        assertEquals(1, epic1.getSubtasks().size(), "subtask should be removed");
+        assertEquals(1, epic1.getSubtaskIds().size(), "subtask should be removed");
     }
 
     @Test

@@ -90,7 +90,7 @@ public class InMemoryTaskManager implements TaskManager {
 			return null;
 		}
 		subtasks.put(subtask.getId(), subtask);
-		epic.addSubtaskId(subtask);
+		epic.addSubtaskId(subtask.getId());
 		updateEpicStatus(epicId);
 		return subtask.getId();
 	}
@@ -151,7 +151,7 @@ public class InMemoryTaskManager implements TaskManager {
 			return;
 		}
 		Epic epic = epics.get(subtask.getEpicId());
-		epic.removeSubtask(subtask);
+		epic.removeSubtask(subtask.getId());
 		historyManager.remove(subtask.getId());
 		updateEpicStatus(epic.getId());
 	}
