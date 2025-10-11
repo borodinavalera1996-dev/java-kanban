@@ -26,9 +26,9 @@ public class Main {
 		final int epicId1 = manager.addNewEpic(epic1);
 		final int epicId2 = manager.addNewEpic(epic2);
 
-		Subtask subtask1 = new Subtask("Subtask #1-1", "Subtask1 description", NEW, epicId1);
-		Subtask subtask2 = new Subtask("Subtask #2-1", "Subtask1 description", NEW, epicId1);
-		Subtask subtask3 = new Subtask("Subtask #3-2", "Subtask1 description", DONE, epicId2);
+		Subtask subtask1 = new Subtask("Subtask #1-1", "Subtask1 description", NEW, epic1);
+		Subtask subtask2 = new Subtask("Subtask #2-1", "Subtask1 description", NEW, epic1);
+		Subtask subtask3 = new Subtask("Subtask #3-2", "Subtask1 description", DONE, epic2);
 		manager.addNewSubtask(subtask1);
 		final Integer subtaskId2 = manager.addNewSubtask(subtask2);
 		final Integer subtaskId3 = manager.addNewSubtask(subtask3);
@@ -85,6 +85,43 @@ public class Main {
 		System.out.println("DELETE: Epic1");
 		manager.deleteEpic(epicId1);
 		printAllTasks(manager);
+
+		//Создайте две задачи, эпик с тремя подзадачами и эпик без подзадач.
+		Epic epic3 = new Epic("Epic #3", "Epic1 description");
+		manager.addNewEpic(epic3);
+		Subtask subtask1ForEpic3 = new Subtask("Subtask #3-1", "Subtask1 description", NEW, epic3);
+		Subtask subtask2ForEpic3 = new Subtask("Subtask #3-2", "Subtask2 description", NEW, epic3);
+		Subtask subtask3ForEpic3 = new Subtask("Subtask #3-3", "Subtask3 description", DONE, epic3);
+		manager.addNewSubtask(subtask1ForEpic3);
+		manager.addNewSubtask(subtask2ForEpic3);
+		manager.addNewSubtask(subtask3ForEpic3);
+
+		Epic epic4 = new Epic("Epic #4", "Epic2 description");
+		manager.addNewEpic(epic4);
+		System.out.println("CREATE: Epic #3, Epic #4");
+		printAllTasks(manager);
+
+		//Запросите созданные задачи несколько раз в разном порядке.
+		//После каждого запроса выведите историю и убедитесь, что в ней нет повторов.
+		System.out.println("Get Epic #3");
+		manager.getEpic(epic3.getId());
+		printHistoryTasks(manager);
+		System.out.println("Get Epic #4");
+		manager.getEpic(epic4.getId());
+		printHistoryTasks(manager);
+		System.out.println("Get Epic #3");
+		manager.getEpic(epic3.getId());
+		printHistoryTasks(manager);
+
+		//Удалите задачу, которая есть в истории, и проверьте, что при печати она не будет выводиться.
+		System.out.println("Remove Epic #4");
+		manager.deleteEpic(epic4.getId());
+		printHistoryTasks(manager);
+
+		System.out.println("Remove Epic #3");
+		//Удалите эпик с тремя подзадачами и убедитесь, что из истории удалился как сам эпик, так и все его подзадачи.
+		manager.deleteEpic(epic3.getId());
+		printAllTasks(manager);
 	}
 
 	private static void printAllTasks(TaskManager manager) {
@@ -105,6 +142,9 @@ public class Main {
 			System.out.println(subtask);
 		}
 
+		printHistoryTasks(manager);
+	}
+	private static void printHistoryTasks(TaskManager manager) {
 		System.out.println("История:");
 		for (Task task : manager.getHistory()) {
 			System.out.println(task);
