@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import ru.yandex.javacourse.schedule.tasks.Task;
 import ru.yandex.javacourse.schedule.tasks.TaskStatus;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class InMemoryHistoryManagerTest {
@@ -66,9 +68,7 @@ public class InMemoryHistoryManagerTest {
         Task task3 = new Task( "Test 3", "Testiong task 3", TaskStatus.NEW);
         historyManager.addTask(task3);
         assertEquals(3, historyManager.getHistory().size(), "historic tasks should be added");
-        assertEquals(task1.getId(), historyManager.getHistory().get(0).getId(), "historic task should be on order adding");
-        assertEquals(task2.getId(), historyManager.getHistory().get(1).getId(), "historic task should be on order adding");
-        assertEquals(task3.getId(), historyManager.getHistory().get(2).getId(), "historic task should be on order adding");
+        assertEquals(List.of(task1, task2, task3), historyManager.getHistory(), "historic task should be on order adding");
     }
 
     @Test
@@ -82,8 +82,7 @@ public class InMemoryHistoryManagerTest {
         assertEquals(3, historyManager.getHistory().size(), "historic tasks should be added");
         historyManager.remove(task2.getId());
         assertEquals(2, historyManager.getHistory().size(), "historic tasks should be removed");
-        assertEquals(task1.getId(), historyManager.getHistory().get(0).getId(), "historic task should be on order adding");
-        assertEquals(task3.getId(), historyManager.getHistory().get(1).getId(), "historic task should be on order adding");
+        assertEquals(List.of(task1, task3), historyManager.getHistory(), "historic task should be on order adding");
     }
 
     @Test
@@ -97,9 +96,7 @@ public class InMemoryHistoryManagerTest {
         assertEquals(3, historyManager.getHistory().size(), "historic tasks should be added");
         task2.setStatus(TaskStatus.IN_PROGRESS);
         historyManager.addTask(task2);
-        assertEquals(task1.getId(), historyManager.getHistory().get(0).getId(), "historic task should be on order adding");
-        assertEquals(task3.getId(), historyManager.getHistory().get(1).getId(), "historic task should be on order adding");
-        assertEquals(task2.getId(), historyManager.getHistory().get(2).getId(), "historic task should be on order adding");
+        assertEquals(List.of(task1, task3, task2), historyManager.getHistory(), "historic task should be on order adding");
     }
 
     @Test
@@ -113,8 +110,7 @@ public class InMemoryHistoryManagerTest {
         assertEquals(3, historyManager.getHistory().size(), "historic tasks should be added");
         historyManager.remove(task1.getId());
         assertEquals(2, historyManager.getHistory().size(), "historic tasks should be removed");
-        assertEquals(task2.getId(), historyManager.getHistory().get(0).getId(), "historic task should be on order adding");
-        assertEquals(task3.getId(), historyManager.getHistory().get(1).getId(), "historic task should be on order adding");
+        assertEquals(List.of(task2, task3), historyManager.getHistory(), "historic task should be on order adding");
     }
     @Test
     public void testOrderRemovingLastHistoryByTasks() {
@@ -127,8 +123,7 @@ public class InMemoryHistoryManagerTest {
         assertEquals(3, historyManager.getHistory().size(), "historic tasks should be added");
         historyManager.remove(task3.getId());
         assertEquals(2, historyManager.getHistory().size(), "historic tasks should be removed");
-        assertEquals(task1.getId(), historyManager.getHistory().get(0).getId(), "historic task should be on order adding");
-        assertEquals(task2.getId(), historyManager.getHistory().get(1).getId(), "historic task should be on order adding");
+        assertEquals(List.of(task1, task2), historyManager.getHistory(), "historic task should be on order adding");
     }
     @Test
     public void testDoubleHistoryByTasks() {
@@ -142,8 +137,6 @@ public class InMemoryHistoryManagerTest {
         historyManager.addTask(task3);
         historyManager.addTask(task3);
         assertEquals(3, historyManager.getHistory().size(), "historic tasks should be added");
-        assertEquals(task1.getId(), historyManager.getHistory().get(0).getId(), "historic task should be on order adding");
-        assertEquals(task2.getId(), historyManager.getHistory().get(1).getId(), "historic task should be on order adding");
-        assertEquals(task3.getId(), historyManager.getHistory().get(2).getId(), "historic task should be on order adding");
+        assertEquals(List.of(task1, task2, task3), historyManager.getHistory(), "historic task should be on order adding");
     }
 }
