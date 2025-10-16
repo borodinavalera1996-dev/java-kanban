@@ -9,9 +9,9 @@ public class EpicTest {
 
     @Test
     public void testSubtaskUniqueIds() {
-        Epic epic = new Epic("Epic 1", "Testing epic 1");
-        Subtask s0 = new Subtask("Test 1", "Testing task 1", TaskStatus.NEW, epic);
-        Subtask s1 = new Subtask("Test 2", "Testing task 2", TaskStatus.NEW, epic);
+        Epic epic = new Epic(1, "Epic 1",  TaskStatus.NEW, "Testing epic 1");
+        Subtask s0 = new Subtask(2,"Test 1",  TaskStatus.NEW, "Testing task 1", epic.getId());
+        Subtask s1 = new Subtask(3, "Test 2", TaskStatus.NEW, "Testing task 2", epic.getId());
         epic.addSubtaskId(s0.getId());
         epic.addSubtaskId(s1.getId());
         assertEquals(2, epic.getSubtaskIds().size(), "should add distinct subtask ids");
@@ -21,8 +21,8 @@ public class EpicTest {
 
     @Test
     public void testSubtaskRemoving() {
-        Epic epic = new Epic("Epic 1", "Testing epic 1");
-        Subtask s0 = new Subtask("Test 1", "Testing task 1", TaskStatus.NEW, epic);
+        Epic epic = new Epic(1, "Epic 1",  TaskStatus.NEW, "Testing epic 1");
+        Subtask s0 = new Subtask(2,"Test 1",  TaskStatus.NEW, "Testing task 1", epic.getId());
         epic.addSubtaskId(s0.getId());
         assertEquals(1, epic.getSubtaskIds().size(), "epic should add subtask");
         epic.removeSubtask(s0.getId());

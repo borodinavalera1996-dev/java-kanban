@@ -20,7 +20,7 @@ public class InMemoryHistoryManagerTest {
 
     @Test
     public void testRemovingHistoryByOneTask() {
-        Task task = new Task("Test 1", "Testiong task 1", TaskStatus.NEW);
+        Task task = new Task( 1, "Test 1", TaskStatus.NEW, "Testiong task 1");
         historyManager.addTask(task);
         assertEquals(1, historyManager.getHistory().size(), "historic task should be added");
         historyManager.remove(task.getId());
@@ -29,9 +29,9 @@ public class InMemoryHistoryManagerTest {
 
     @Test
     public void testRemovingHistoryByTasks() {
-        Task task1 = new Task( "Test 1", "Testiong task 1", TaskStatus.NEW);
+        Task task1 = new Task( 1, "Test 1", TaskStatus.NEW, "Testiong task 1");
         historyManager.addTask(task1);
-        Task task2 = new Task( "Test 2", "Testiong task 2", TaskStatus.NEW);
+        Task task2 = new Task( 2,"Test 2", TaskStatus.NEW, "Testiong task 2");
         historyManager.addTask(task2);
         assertEquals(2, historyManager.getHistory().size(), "historic tasks should be added");
         historyManager.remove(task2.getId());
@@ -40,7 +40,7 @@ public class InMemoryHistoryManagerTest {
 
     @Test
     public void testHistoricVersions(){
-        Task task = new Task("Test 1", "Testiong task 1", TaskStatus.NEW);
+        Task task = new Task( 1, "Test 1", TaskStatus.NEW, "Testiong task 1");
         historyManager.addTask(task);
         assertEquals(1, historyManager.getHistory().size(), "historic task should be added");
         task.setStatus(TaskStatus.IN_PROGRESS);
@@ -50,7 +50,7 @@ public class InMemoryHistoryManagerTest {
 
     @Test
     public void testHistoricVersionsByPointer(){
-        Task task = new Task("Test 1", "Testiong task 1", TaskStatus.NEW);
+        Task task = new Task( 1, "Test 1", TaskStatus.NEW, "Testiong task 1");
         historyManager.addTask(task);
         assertEquals(task.getStatus(), historyManager.getHistory().get(0).getStatus(), "historic task should be stored");
         task.setStatus(TaskStatus.IN_PROGRESS);
@@ -61,11 +61,11 @@ public class InMemoryHistoryManagerTest {
 
     @Test
     public void testOrderHistoryByTasks() {
-        Task task1 = new Task( "Test 1", "Testiong task 1", TaskStatus.NEW);
+        Task task1 = new Task( 1, "Test 1", TaskStatus.NEW, "Testiong task 1");
         historyManager.addTask(task1);
-        Task task2 = new Task( "Test 2", "Testiong task 2", TaskStatus.NEW);
+        Task task2 = new Task( 2,"Test 2", TaskStatus.NEW, "Testiong task 2");
         historyManager.addTask(task2);
-        Task task3 = new Task( "Test 3", "Testiong task 3", TaskStatus.NEW);
+        Task task3 = new Task( 3, "Test 3", TaskStatus.NEW, "Testiong task 3");
         historyManager.addTask(task3);
         assertEquals(3, historyManager.getHistory().size(), "historic tasks should be added");
         assertEquals(List.of(task1, task2, task3), historyManager.getHistory(), "historic task should be on order adding");
@@ -73,11 +73,11 @@ public class InMemoryHistoryManagerTest {
 
     @Test
     public void testOrderRemovingHistoryByTasks() {
-        Task task1 = new Task( "Test 1", "Testiong task 1", TaskStatus.NEW);
+        Task task1 = new Task( 1, "Test 1", TaskStatus.NEW, "Testiong task 1");
         historyManager.addTask(task1);
-        Task task2 = new Task( "Test 2", "Testiong task 2", TaskStatus.NEW);
+        Task task2 = new Task( 2,"Test 2", TaskStatus.NEW, "Testiong task 2");
         historyManager.addTask(task2);
-        Task task3 = new Task( "Test 3", "Testiong task 3", TaskStatus.NEW);
+        Task task3 = new Task( 3, "Test 3", TaskStatus.NEW, "Testiong task 3");
         historyManager.addTask(task3);
         assertEquals(3, historyManager.getHistory().size(), "historic tasks should be added");
         historyManager.remove(task2.getId());
@@ -87,11 +87,11 @@ public class InMemoryHistoryManagerTest {
 
     @Test
     public void testOrderUpdatingHistoryByTasks() {
-        Task task1 = new Task( "Test 1", "Testiong task 1", TaskStatus.NEW);
+        Task task1 = new Task( 1, "Test 1", TaskStatus.NEW, "Testiong task 1");
         historyManager.addTask(task1);
-        Task task2 = new Task( "Test 2", "Testiong task 2", TaskStatus.NEW);
+        Task task2 = new Task( 2,"Test 2", TaskStatus.NEW, "Testiong task 2");
         historyManager.addTask(task2);
-        Task task3 = new Task( "Test 3", "Testiong task 3", TaskStatus.NEW);
+        Task task3 = new Task( 3, "Test 3", TaskStatus.NEW, "Testiong task 3");
         historyManager.addTask(task3);
         assertEquals(3, historyManager.getHistory().size(), "historic tasks should be added");
         task2.setStatus(TaskStatus.IN_PROGRESS);
@@ -101,11 +101,11 @@ public class InMemoryHistoryManagerTest {
 
     @Test
     public void testOrderRemovingFirstHistoryByTasks() {
-        Task task1 = new Task( "Test 1", "Testiong task 1", TaskStatus.NEW);
+        Task task1 = new Task( 1, "Test 1", TaskStatus.NEW, "Testiong task 1");
         historyManager.addTask(task1);
-        Task task2 = new Task( "Test 2", "Testiong task 2", TaskStatus.NEW);
+        Task task2 = new Task( 2,"Test 2", TaskStatus.NEW, "Testiong task 2");
         historyManager.addTask(task2);
-        Task task3 = new Task( "Test 3", "Testiong task 3", TaskStatus.NEW);
+        Task task3 = new Task( 3, "Test 3", TaskStatus.NEW, "Testiong task 3");
         historyManager.addTask(task3);
         assertEquals(3, historyManager.getHistory().size(), "historic tasks should be added");
         historyManager.remove(task1.getId());
@@ -114,11 +114,11 @@ public class InMemoryHistoryManagerTest {
     }
     @Test
     public void testOrderRemovingLastHistoryByTasks() {
-        Task task1 = new Task( "Test 1", "Testiong task 1", TaskStatus.NEW);
+        Task task1 = new Task( 1, "Test 1", TaskStatus.NEW, "Testiong task 1");
         historyManager.addTask(task1);
-        Task task2 = new Task( "Test 2", "Testiong task 2", TaskStatus.NEW);
+        Task task2 = new Task( 2,"Test 2", TaskStatus.NEW, "Testiong task 2");
         historyManager.addTask(task2);
-        Task task3 = new Task( "Test 3", "Testiong task 3", TaskStatus.NEW);
+        Task task3 = new Task( 3, "Test 3", TaskStatus.NEW, "Testiong task 3");
         historyManager.addTask(task3);
         assertEquals(3, historyManager.getHistory().size(), "historic tasks should be added");
         historyManager.remove(task3.getId());
@@ -127,13 +127,13 @@ public class InMemoryHistoryManagerTest {
     }
     @Test
     public void testDoubleHistoryByTasks() {
-        Task task1 = new Task( "Test 1", "Testiong task 1", TaskStatus.NEW);
+        Task task1 = new Task( 1, "Test 1", TaskStatus.NEW, "Testiong task 1");
         historyManager.addTask(task1);
         historyManager.addTask(task1);
-        Task task2 = new Task( "Test 2", "Testiong task 2", TaskStatus.NEW);
+        Task task2 = new Task( 2,"Test 2", TaskStatus.NEW, "Testiong task 2");
         historyManager.addTask(task2);
         historyManager.addTask(task2);
-        Task task3 = new Task( "Test 3", "Testiong task 3", TaskStatus.NEW);
+        Task task3 = new Task( 3, "Test 3", TaskStatus.NEW, "Testiong task 3");
         historyManager.addTask(task3);
         historyManager.addTask(task3);
         assertEquals(3, historyManager.getHistory().size(), "historic tasks should be added");
