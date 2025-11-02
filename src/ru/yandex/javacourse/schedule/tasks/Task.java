@@ -13,17 +13,13 @@ public class Task {
 
 	public Task(String name, String description, TaskStatus status) {
 		this.name = name;
-		this.type = TaskType.TASK;
 		this.description = description;
 		this.status = status;
 	}
 
 	public Task(int id, String name, TaskStatus status, String description) {
+		this(name, description, status);
 		this.id = id;
-		this.name = name;
-		this.type = TaskType.TASK;
-		this.status = status;
-		this.description = description;
 	}
 
 	public int getId() {
@@ -43,7 +39,7 @@ public class Task {
 	}
 
 	public TaskType getType() {
-		return type;
+		return TaskType.TASK;
 	}
 
 	public void setType(TaskType type) {

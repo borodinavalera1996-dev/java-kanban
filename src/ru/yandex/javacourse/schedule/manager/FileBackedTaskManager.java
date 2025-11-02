@@ -20,29 +20,35 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             bufferedReader.readLine(); // skip first line
             while (bufferedReader.ready()) {
                 Task task = fromString(bufferedReader.readLine());
-                if (task instanceof Epic) {
+                if (TaskType.EPIC.equals(task.getType())) {
                     super.addNewEpic((Epic) task);
-                } else if (task instanceof Subtask) {
+                } else if (TaskType.SUBTASK.equals(task.getType())) {
                     super.addNewSubtask((Subtask)task);
                 } else {
                     super.addNewTask(task);
                 }
             }
         } catch (IOException e) {
-            throw new ManagerSaveException(e);
+            throw new ManagerSaveException("Не удалось прочитать файл " + file.getName(), e);
         }
     }
 
     private Task fromString(String value) {
         String[] split = value.split(",");
         int id = Integer.parseInt(split[0]);
+        String type = split[1];
+        String name = split[2];
+        TaskStatus status = TaskStatus.valueOf(split[3]);
+        String description = split[4];
+
         findMaxId(id);
-        if (TaskType.EPIC.toString().equals(split[1])) {
-            return new Epic(id, split[2], TaskStatus.valueOf(split[3]), split[4]);
-        } else if (TaskType.SUBTASK.toString().equals(split[1])) {
-            return new Subtask(id, split[2], TaskStatus.valueOf(split[3]), split[4], Integer.parseInt(split[5]));
+        if (TaskType.EPIC.toString().equals(type)) {
+            return new Epic(id, name, status, description);
+        } else if (TaskType.SUBTASK.toString().equals(type)) {
+            int epicId = Integer.parseInt(split[5]);
+            return new Subtask(id, name, status, description, epicId);
         } else {
-            return new Task(id, split[2], TaskStatus.valueOf(split[3]), split[4]);
+            return new Task(id, name, status, description);
         }
     }
 
@@ -57,7 +63,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         try (FileWriter fileWriter = new FileWriter(file); BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)) {
             bufferedWriter.write(tasks);
         } catch (IOException e) {
-           throw new ManagerSaveException(e);
+           throw new ManagerSaveException("Не удалось сохранить задачи в файл " + file.getName(), e);
         }
     }
 
