@@ -1,28 +1,33 @@
 package ru.yandex.javacourse.schedule.tasks;
 
-import ru.yandex.javacourse.schedule.tasks.util.GeneratorId;
-
 import java.util.Objects;
 
 public class Task {
-
-	static GeneratorId generatorId = new GeneratorId();
-
 	protected int id;
+
 	protected String name;
+	protected TaskType type;
 	protected TaskStatus status;
 	protected String description;
 
 
 	public Task(String name, String description, TaskStatus status) {
-		this.id = generatorId.getNewId();
 		this.name = name;
 		this.description = description;
 		this.status = status;
 	}
 
+	public Task(int id, String name, TaskStatus status, String description) {
+		this(name, description, status);
+		this.id = id;
+	}
+
 	public int getId() {
 		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getName() {
@@ -31,6 +36,14 @@ public class Task {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public TaskType getType() {
+		return TaskType.TASK;
+	}
+
+	public void setType(TaskType type) {
+		this.type = type;
 	}
 
 	public TaskStatus getStatus() {
@@ -64,11 +77,7 @@ public class Task {
 
 	@Override
 	public String toString() {
-		return "Task{" +
-				"id=" + id +
-				", name='" + name + '\'' +
-				", status='" + status + '\'' +
-				", description='" + description + '\'' +
-				'}';
+		return String.format("%s,%s,%s,%s,%s,",this.getId(),this.getType(),this.getName(),
+				this.getStatus().toString(),this.getDescription());
 	}
 }

@@ -11,6 +11,14 @@ public class Epic extends Task {
 		super(name, description, NEW);
 	}
 
+	public Epic(int id, String name, TaskStatus status, String description) {
+		super(id, name, status, description);
+	}
+
+	public TaskType getType() {
+		return TaskType.EPIC;
+	}
+
 	public void addSubtaskId(Integer subtask) {
 		if (getId() == subtask)
 			throw new IllegalArgumentException("Epic cannot be added to epic like subtask for itself");
@@ -31,12 +39,7 @@ public class Epic extends Task {
 
 	@Override
 	public String toString() {
-		return "Epic{" +
-				"id=" + id +
-				", name='" + name + '\'' +
-				", status=" + status +
-				", description='" + description + '\'' +
-				", subtaskIds=" + getSubtaskIds() +
-				'}';
+		return String.format("%s,%s,%s,%s,%s,",this.getId(),this.getType(),this.getName(),
+				this.getStatus().toString(),this.getDescription());
 	}
 }
