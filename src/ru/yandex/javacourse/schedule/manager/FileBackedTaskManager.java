@@ -1,13 +1,16 @@
 package ru.yandex.javacourse.schedule.manager;
 
+import ru.yandex.javacourse.schedule.exception.ManagerSaveException;
 import ru.yandex.javacourse.schedule.tasks.*;
 
 import java.io.*;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
 
-    public static final String COLUMNS = "id,type,name,status,description,epic\n";
+    public static final String COLUMNS = "id,type,name,status,description,epic,startTime,duration\n";
     private final File file;
 
     public FileBackedTaskManager(File file) {
@@ -40,15 +43,17 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         String name = split[2];
         TaskStatus status = TaskStatus.valueOf(split[3]);
         String description = split[4];
+        LocalDateTime startTime = split[6].equals("null") ? null : LocalDateTime.parse(split[6]);
+        Duration duration = Duration.parse(split[7]);
 
         findMaxId(id);
         if (TaskType.EPIC.toString().equals(type)) {
-            return new Epic(id, name, status, description);
+            return new Epic(id, name, status, description, duration, startTime);
         } else if (TaskType.SUBTASK.toString().equals(type)) {
             int epicId = Integer.parseInt(split[5]);
-            return new Subtask(id, name, status, description, epicId);
+            return new Subtask(id, name, status, description, duration, startTime, epicId);
         } else {
-            return new Task(id, name, status, description);
+            return new Task(id, name, status, description, duration, startTime);
         }
     }
 
