@@ -1,4 +1,4 @@
-package ru.yandex.javacourse.schedule.manager;
+package ru.yandex.javacourse.schedule.exception;
 
 public class ManagerSaveException extends RuntimeException {
 

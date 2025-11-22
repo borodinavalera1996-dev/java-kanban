@@ -1,6 +1,7 @@
 package ru.yandex.javacourse.schedule.manager;
 
 import java.util.List;
+import java.util.Set;
 
 import ru.yandex.javacourse.schedule.tasks.Epic;
 import ru.yandex.javacourse.schedule.tasks.Subtask;
@@ -21,6 +22,8 @@ public interface TaskManager {
 	List<Subtask> getEpicSubtasks(int epicId);
 
 	Task getTask(int id);
+
+	Set<Task> getPrioritizedTasks();
 
 	Subtask getSubtask(int id);
 
