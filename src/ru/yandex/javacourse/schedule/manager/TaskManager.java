@@ -23,7 +23,7 @@ public interface TaskManager {
 
 	Task getTask(int id);
 
-	Set<Task> getPrioritizedTasks();
+	List<Task> getPrioritizedTasks();
 
 	Subtask getSubtask(int id);
 

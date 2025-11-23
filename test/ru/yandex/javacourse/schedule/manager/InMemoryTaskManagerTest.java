@@ -10,7 +10,7 @@ import ru.yandex.javacourse.schedule.tasks.TaskStatus;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager>{
+public class InMemoryTaskManagerTest extends TaskManagerTest<TaskManager>{
 
     @BeforeEach
     public void initManager(){

@@ -58,8 +58,8 @@ public class InMemoryTaskManager implements TaskManager {
 	}
 
 	@Override
-	public Set<Task> getPrioritizedTasks() {
-		return sorterTask;
+	public List<Task> getPrioritizedTasks() {
+		return new ArrayList<>(sorterTask);
 	}
 
 	@Override
@@ -157,7 +157,8 @@ public class InMemoryTaskManager implements TaskManager {
 
 	@Override
 	public void deleteTask(int id) {
-		tasks.remove(id);
+		Task removed = tasks.remove(id);
+		sorterTask.remove(removed);
 		historyManager.remove(id);
 	}
 
@@ -166,8 +167,9 @@ public class InMemoryTaskManager implements TaskManager {
 		final Epic epic = epics.remove(id);
 		historyManager.remove(id);
 		for (Integer subtaskId : epic.getSubtaskIds()) {
-			subtasks.remove(subtaskId);
+			Subtask removed = subtasks.remove(subtaskId);
 			historyManager.remove(subtaskId);
+			sorterTask.remove(removed);
 		}
 	}
 
@@ -182,6 +184,7 @@ public class InMemoryTaskManager implements TaskManager {
 		historyManager.remove(subtask.getId());
 		updateEpicStatus(epic.getId());
 		updateEpicTime(epic.getId());
+		sorterTask.remove(subtask);
 	}
 
 	@Override
@@ -214,9 +217,7 @@ public class InMemoryTaskManager implements TaskManager {
 
 	//	Добавьте метод проверяющий пересекается ли задача с любой другой в списке менеджера
 	private boolean intersectTask(Task task1, Task task2) {
-		if (task1.getStartTime().isBefore(task2.getStartTime()))
-			return !task1.getStartTime().plus(task1.getDuration()).isBefore(task2.getStartTime());
-		return !task2.getStartTime().plus(task2.getDuration()).isBefore(task1.getStartTime());
+		return (task1.getStartTime().isBefore(task2.getEndTime()) && task1.getEndTime().isAfter(task2.getStartTime()));
 	}
 
 	//	При добавлении или изменении задач и подзадач сначала выполните проверку на пересечение.

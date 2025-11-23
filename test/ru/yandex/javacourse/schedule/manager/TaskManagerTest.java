@@ -9,18 +9,14 @@ import ru.yandex.javacourse.schedule.exception.IntersectTimeException;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.Month;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public abstract class TaskManagerTest<T extends TaskManager> {
 
-    TaskManager manager;
+    T  manager;
 
     @Test
     public void testEpicStatusWithSubtaskWithAllNewTaskStatus() {
@@ -89,7 +85,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         manager.addNewTask(task1);
         manager.addNewTask(task2);
 
-        Set<Task> tasks = Set.of(task2,task1,task);
+        List<Task> tasks = List.of(task2,task1,task);
         assertEquals(tasks, manager.getPrioritizedTasks(), "should equals");
     }
 
@@ -178,23 +174,6 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         manager.addNewSubtask(s0);
         epic.addSubtaskId(s1.getId());
         assertThrows(IntersectTimeException.class, () -> manager.addNewSubtask(s1));
-    }
-
-    @Test
-    public void testGetPrioritizedTasks() {
-        LocalDateTime startDate = LocalDateTime.now().minusDays(5);
-        Task task = new Task(1, "Test 1", TaskStatus.NEW, "Testing task 1", Duration.ZERO, startDate);
-        Task task1 = new Task(2, "Test 1", TaskStatus.NEW, "Testing task 1", Duration.ZERO, startDate.plusDays(1));
-        Task task2 = new Task(3, "Test 1", TaskStatus.NEW, "Testing task 1", Duration.ZERO, startDate.plusDays(2));
-        Task task3 = new Task(4, "Test 1", TaskStatus.NEW, "Testing task 1", Duration.ZERO, startDate.plusDays(3));
-        Task task4 = new Task(5, "Test 1", TaskStatus.NEW, "Testing task 1", Duration.ZERO, startDate.plusDays(4));
-        manager.addNewTask(task);
-        manager.addNewTask(task1);
-        manager.addNewTask(task2);
-        manager.addNewTask(task3);
-        manager.addNewTask(task4);
-        System.out.println(manager.getPrioritizedTasks());
-//        assertEquals(manager.getPrioritizedTasks());
     }
 
     @Test
