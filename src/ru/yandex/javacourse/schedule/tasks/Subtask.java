@@ -1,5 +1,8 @@
 package ru.yandex.javacourse.schedule.tasks;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+
 public class Subtask extends Task {
 	protected int epicId;
 
@@ -13,6 +16,11 @@ public class Subtask extends Task {
 		this.epicId = epicId;
 	}
 
+	public Subtask(int id, String name, TaskStatus status, String description, Duration duration, LocalDateTime startTime, int epicId) {
+		super(id, name, status, description, duration, startTime);
+		this.epicId = epicId;
+	}
+
 	public TaskType getType() {
 		return TaskType.SUBTASK;
 	}
@@ -23,7 +31,7 @@ public class Subtask extends Task {
 
 	@Override
 	public String toString() {
-		return String.format("%s,%s,%s,%s,%s,%s",this.getId(),this.getType(),this.getName(),
-				this.getStatus().toString(),this.getDescription(),this.getEpicId());
+		return String.format("%s,%s,%s,%s,%s,%s,%s,%s",this.getId(),this.getType(),this.getName(),
+				this.getStatus().toString(),this.getDescription(),this.getEpicId(),this.getStartTime(),this.getDuration());
 	}
 }

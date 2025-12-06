@@ -144,6 +144,7 @@ public class Main {
 
 		printHistoryTasks(manager);
 	}
+
 	private static void printHistoryTasks(TaskManager manager) {
 		System.out.println("История:");
 		for (Task task : manager.getHistory()) {

@@ -9,13 +9,24 @@ import ru.yandex.javacourse.schedule.tasks.TaskStatus;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.Month;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class FileBackedTaskManagerTest {
+public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskManager>{
+
+    @BeforeEach
+    public void initManager() throws IOException {
+        File tempFile = File.createTempFile("FileBackedTaskManager", ".csv");
+        manager = FileBackedTaskManager.loadFromFile(tempFile);
+    }
+
+
     @Test
-    public void testAddTask() throws IOException {
-        Task task = new Task("Test 1", "Testing task 1", TaskStatus.NEW);
+    public void testAddTaskToFile() throws IOException {
+        Task task = new Task(1, "Test 1", TaskStatus.NEW, "Testing task 1", Duration.ZERO, LocalDateTime.of(2025, Month.APRIL, 12, 5, 10));
 
         File tempFile = File.createTempFile("FileBackedTaskManager", ".csv");
         TaskManager manager = FileBackedTaskManager.loadFromFile(tempFile);
@@ -25,6 +36,23 @@ public class FileBackedTaskManagerTest {
 
         TaskManager manager2 = FileBackedTaskManager.loadFromFile(tempFile);
         assertEquals(1, manager2.getTasks().size(), "task should be added");
+    }
+
+    @Test
+    public void testReadDate() throws IOException {
+        Task task = new Task(1, "Test 1", TaskStatus.NEW, "Testing task 1", Duration.ZERO, LocalDateTime.of(2025, Month.APRIL, 12, 5, 10));
+
+        File tempFile = File.createTempFile("FileBackedTaskManager", ".csv");
+        TaskManager manager = FileBackedTaskManager.loadFromFile(tempFile);
+
+        manager.addNewTask(task);
+        assertEquals(1, manager.getTasks().size(), "task should be added");
+
+        TaskManager manager2 = FileBackedTaskManager.loadFromFile(tempFile);
+        Task task1 = manager2.getTasks().get(0);
+        assertEquals(1, manager2.getTasks().size(), "task should be added");
+        assertEquals(Duration.ZERO, task1.getDuration(), "duration should be equals");
+        assertEquals(LocalDateTime.of(2025, Month.APRIL, 12, 5, 10), task1.getStartTime(), "date should be equals");
     }
 
     @Test
@@ -79,5 +107,4 @@ public class FileBackedTaskManagerTest {
 
         assertEquals(4, manager2.getSubtasks().get(1).getId(), "ids should be equals");
     }
-
 }
