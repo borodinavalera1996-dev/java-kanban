@@ -170,7 +170,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         File file = File.createTempFile("FileBackedTaskManager", ".csv");
         FileBackedTaskManager taskManager = loadFromFile(file);
 
-        Task task = new Task( "Test 1", "Testing task 1", TaskStatus.NEW);
+        Task task = new Task("Test 1", "Testing task 1", TaskStatus.NEW);
         taskManager.addNewTask(task);
 
         Epic epic = new Epic("Epic 1", "Testing epic 1");
@@ -180,7 +180,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         taskManager.addNewSubtask(s0);
         epic.addSubtaskId(s0.getId());
 
-        Subtask s1 = new Subtask( "Test 2", "Testing task 2",  TaskStatus.NEW, epic);
+        Subtask s1 = new Subtask("Test 2", "Testing task 2",  TaskStatus.NEW, epic);
         taskManager.addNewSubtask(s1);
         epic.addSubtaskId(s1.getId());
 
