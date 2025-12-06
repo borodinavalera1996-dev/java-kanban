@@ -24,6 +24,7 @@ public class InMemoryTaskManager implements TaskManager {
 	private final HistoryManager historyManager = Managers.getDefaultHistory();
 
 	private final Set<Task> sorterTask = new TreeSet<>(Comparator.comparing(Task::getStartTime));
+
 	@Override
 	public ArrayList<Task> getTasks() {
 		return new ArrayList<>(this.tasks.values());
