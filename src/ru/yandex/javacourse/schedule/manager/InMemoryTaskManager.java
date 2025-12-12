@@ -110,7 +110,7 @@ public class InMemoryTaskManager implements TaskManager {
 		if (epic == null) {
 			return null;
 		}
-		if (epic.getSubtaskIds().size() > 1 && subtask.getStartTime() != null && intersectTask(subtask))
+		if (epic.getSubtaskIds().size() >= 1 && subtask.getStartTime() != null && intersectTask(subtask))
 			throw new IntersectTimeException();
 		setId(subtask);
 		subtasks.put(subtask.getId(), subtask);
