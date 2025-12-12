@@ -158,5 +158,12 @@ public class SubtasksHandler extends BaseHttpHandler implements HttpHandler {
         return SubtasksHandler.Endpoint.UNKNOWN;
     }
 
-    enum Endpoint {GET_SUBTASKS, GET_SUBTASK, CREATE_SUBTASK, UPDATE_SUBTASK, DELETE_SUBTASK, UNKNOWN}
+    enum Endpoint {
+        GET_SUBTASKS,
+        GET_SUBTASK,
+        CREATE_SUBTASK,
+        UPDATE_SUBTASK,
+        DELETE_SUBTASK,
+        UNKNOWN
+    }
 }
