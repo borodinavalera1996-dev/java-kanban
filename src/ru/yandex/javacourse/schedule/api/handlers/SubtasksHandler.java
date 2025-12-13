@@ -6,7 +6,6 @@ import com.sun.net.httpserver.HttpHandler;
 import ru.yandex.javacourse.schedule.exception.TaskNotFoundException;
 import ru.yandex.javacourse.schedule.manager.TaskManager;
 import ru.yandex.javacourse.schedule.tasks.Subtask;
-import ru.yandex.javacourse.schedule.tasks.Task;
 
 import java.io.IOException;
 import java.io.InputStream;
