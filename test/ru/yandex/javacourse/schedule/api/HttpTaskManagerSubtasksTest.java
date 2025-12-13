@@ -138,7 +138,7 @@ public class HttpTaskManagerSubtasksTest {
         Subtask task = new Subtask(2,"Test 1",  TaskStatus.NEW,"Testing task 1", Duration.ofHours(3), LocalDateTime.now(), epic.getId());
         manager.addNewSubtask(task);
 
-        Subtask task1 = new Subtask(2,"Test 2",  TaskStatus.NEW,"Testing task 1", Duration.ofHours(3), LocalDateTime.now(), epic.getId());
+        Subtask task1 = new Subtask(3,"Test 2",  TaskStatus.NEW,"Testing task 1", Duration.ofHours(3), LocalDateTime.now(), epic.getId());
         String taskJson = gson.toJson(task1);
 
         // создаём HTTP-клиент и запрос

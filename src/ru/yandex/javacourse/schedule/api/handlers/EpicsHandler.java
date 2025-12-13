@@ -3,6 +3,7 @@ package ru.yandex.javacourse.schedule.api.handlers;
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import ru.yandex.javacourse.schedule.exception.TaskNotFoundException;
 import ru.yandex.javacourse.schedule.manager.TaskManager;
 import ru.yandex.javacourse.schedule.tasks.Epic;
 import ru.yandex.javacourse.schedule.tasks.Subtask;
@@ -15,10 +16,6 @@ import java.util.List;
 import java.util.Optional;
 
 public class EpicsHandler extends BaseHttpHandler implements HttpHandler {
-
-    private final TaskManager taskManager;
-
-    private final Gson gson;
 
     public EpicsHandler(TaskManager taskManager, Gson gson) {
         this.taskManager = taskManager;
@@ -62,12 +59,12 @@ public class EpicsHandler extends BaseHttpHandler implements HttpHandler {
             return;
         }
         int taskId = taskIdOptional.get();
-        if (taskManager.getEpic(taskId) == null) {
+        try {
+            List<Subtask> epicSubtasks = taskManager.getEpicSubtasks(taskId);
+            sendText(exchange, gson.toJson(epicSubtasks));
+        } catch (TaskNotFoundException ex) {
             sendNotFound(exchange);
-            return;
         }
-        List<Subtask> epicSubtasks = taskManager.getEpicSubtasks(taskId);
-        sendText(exchange, gson.toJson(epicSubtasks));
     }
 
     private void handleDeleteEpic(HttpExchange exchange) throws IOException {
@@ -77,13 +74,13 @@ public class EpicsHandler extends BaseHttpHandler implements HttpHandler {
             return;
         }
         int taskId = taskIdOptional.get();
-        if (taskManager.getEpic(taskId) == null) {
+        try {
+            taskManager.deleteEpic(taskId);
+            exchange.sendResponseHeaders(200, 0);
+            exchange.close();
+        } catch (TaskNotFoundException ex) {
             sendNotFound(exchange);
-            return;
         }
-        taskManager.deleteEpic(taskId);
-        exchange.sendResponseHeaders(200, 0);
-        exchange.close();
     }
 
     private Optional<Epic> parseEpic(InputStream requestBody) throws IOException {
@@ -124,14 +121,12 @@ public class EpicsHandler extends BaseHttpHandler implements HttpHandler {
         }
         int taskId = taskIdOptional.get();
 
-        Task task = taskManager.getEpic(taskId);
-        if (task == null) {
+        try {
+            Task task = taskManager.getEpic(taskId);
+            sendText(exchange, gson.toJson(task));
+        } catch (TaskNotFoundException ex) {
             sendNotFound(exchange);
-            return;
         }
-
-        String json = gson.toJson(task);
-        sendText(exchange, json);
     }
 
     private void handleGetEpics(HttpExchange exchange) throws IOException {

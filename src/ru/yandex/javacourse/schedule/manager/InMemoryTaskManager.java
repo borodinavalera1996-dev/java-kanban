@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 import ru.yandex.javacourse.schedule.exception.IntersectTimeException;
+import ru.yandex.javacourse.schedule.exception.TaskNotFoundException;
 import ru.yandex.javacourse.schedule.tasks.Epic;
 import ru.yandex.javacourse.schedule.tasks.Subtask;
 import ru.yandex.javacourse.schedule.tasks.Task;
@@ -45,7 +46,7 @@ public class InMemoryTaskManager implements TaskManager {
 		ArrayList<Subtask> tasks = new ArrayList<>();
 		Epic epic = epics.get(epicId);
 		if (epic == null) {
-			return null;
+			throw new TaskNotFoundException();
 		}
 		epic.getSubtaskIds().stream().map(subtasks::get).peek(tasks::add);
 		return tasks;
@@ -54,6 +55,9 @@ public class InMemoryTaskManager implements TaskManager {
 	@Override
 	public Task getTask(int id) {
 		final Task task = tasks.get(id);
+		if (task == null) {
+			throw new TaskNotFoundException();
+		}
 		historyManager.addTask(task);
 		return task;
 	}
@@ -66,6 +70,9 @@ public class InMemoryTaskManager implements TaskManager {
 	@Override
 	public Subtask getSubtask(int id) {
 		final Subtask subtask = subtasks.get(id);
+		if (subtask == null) {
+			throw new TaskNotFoundException();
+		}
 		historyManager.addTask(subtask);
 		return subtask;
 	}
@@ -73,6 +80,9 @@ public class InMemoryTaskManager implements TaskManager {
 	@Override
 	public Epic getEpic(int id) {
 		final Epic epic = epics.get(id);
+		if (epic == null) {
+			throw new TaskNotFoundException();
+		}
 		historyManager.addTask(epic);
 		return epic;
 	}
@@ -127,7 +137,7 @@ public class InMemoryTaskManager implements TaskManager {
 		final int id = task.getId();
 		final Task savedTask = tasks.get(id);
 		if (savedTask == null) {
-			return;
+			throw new TaskNotFoundException();
 		}
 		tasks.put(id, task);
 	}
@@ -145,11 +155,11 @@ public class InMemoryTaskManager implements TaskManager {
 		final int epicId = subtask.getEpicId();
 		final Subtask savedSubtask = subtasks.get(id);
 		if (savedSubtask == null) {
-			return;
+			throw new TaskNotFoundException();
 		}
 		final Epic epic = epics.get(epicId);
 		if (epic == null) {
-			return;
+			throw new TaskNotFoundException();
 		}
 		subtasks.put(id, subtask);
 		updateEpicStatus(epicId);
@@ -159,6 +169,8 @@ public class InMemoryTaskManager implements TaskManager {
 	@Override
 	public void deleteTask(int id) {
 		Task removed = tasks.remove(id);
+		if (removed == null)
+			throw new TaskNotFoundException();
 		sorterTask.remove(removed);
 		historyManager.remove(id);
 	}
@@ -166,6 +178,8 @@ public class InMemoryTaskManager implements TaskManager {
 	@Override
 	public void deleteEpic(int id) {
 		final Epic epic = epics.remove(id);
+		if (epic == null)
+			throw new TaskNotFoundException();
 		historyManager.remove(id);
 		for (Integer subtaskId : epic.getSubtaskIds()) {
 			Subtask removed = subtasks.remove(subtaskId);
@@ -178,7 +192,7 @@ public class InMemoryTaskManager implements TaskManager {
 	public void deleteSubtask(int id) {
 		Subtask subtask = subtasks.remove(id);
 		if (subtask == null) {
-			return;
+			throw new TaskNotFoundException();
 		}
 		Epic epic = epics.get(subtask.getEpicId());
 		epic.removeSubtask(subtask.getId());

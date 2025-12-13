@@ -9,10 +9,6 @@ import java.io.IOException;
 
 public class HistoryHandler extends BaseHttpHandler implements HttpHandler {
 
-    private final HistoryManager historyManager;
-
-    private final Gson gson;
-
     public HistoryHandler(HistoryManager historyManager, Gson gson) {
         this.historyManager = historyManager;
         this.gson = gson;

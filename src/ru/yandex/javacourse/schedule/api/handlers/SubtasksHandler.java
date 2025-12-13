@@ -3,8 +3,10 @@ package ru.yandex.javacourse.schedule.api.handlers;
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import ru.yandex.javacourse.schedule.exception.TaskNotFoundException;
 import ru.yandex.javacourse.schedule.manager.TaskManager;
 import ru.yandex.javacourse.schedule.tasks.Subtask;
+import ru.yandex.javacourse.schedule.tasks.Task;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,10 +14,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
 public class SubtasksHandler extends BaseHttpHandler implements HttpHandler {
-
-    private final TaskManager taskManager;
-
-    private final Gson gson;
 
     public SubtasksHandler(TaskManager taskManager, Gson gson) {
         this.taskManager = taskManager;
@@ -59,13 +57,13 @@ public class SubtasksHandler extends BaseHttpHandler implements HttpHandler {
             return;
         }
         int taskId = taskIdOptional.get();
-        if (taskManager.getSubtask(taskId) == null) {
+        try {
+            taskManager.deleteSubtask(taskId);
+            exchange.sendResponseHeaders(200, 0);
+            exchange.close();
+        } catch (TaskNotFoundException ex) {
             sendNotFound(exchange);
-            return;
         }
-        taskManager.deleteSubtask(taskId);
-        exchange.sendResponseHeaders(200, 0);
-        exchange.close();
     }
 
     private void handleUpdateSubtask(HttpExchange exchange) throws IOException {
@@ -75,14 +73,14 @@ public class SubtasksHandler extends BaseHttpHandler implements HttpHandler {
             return;
         }
         int taskId = taskIdOptional.get();
-        if (taskManager.getSubtask(taskId) == null) {
+        try {
+            Optional<Subtask> optionalSubtask = parseSubtask(exchange.getRequestBody());
+            taskManager.updateSubtask(optionalSubtask.get());
+            exchange.sendResponseHeaders(201, 0);
+            exchange.close();
+        } catch (TaskNotFoundException ex) {
             sendNotFound(exchange);
-            return;
         }
-        Optional<Subtask> optionalSubtask = parseSubtask(exchange.getRequestBody());
-        taskManager.updateSubtask(optionalSubtask.get());
-        exchange.sendResponseHeaders(201, 0);
-        exchange.close();
     }
 
     private Optional<Subtask> parseSubtask(InputStream requestBody) throws IOException {
@@ -93,7 +91,6 @@ public class SubtasksHandler extends BaseHttpHandler implements HttpHandler {
             return Optional.empty();
 
         return Optional.of(gson.fromJson(body, Subtask.class));
-
     }
 
     private void handleCreateSubtask(HttpExchange exchange) throws IOException {
@@ -124,14 +121,12 @@ public class SubtasksHandler extends BaseHttpHandler implements HttpHandler {
         }
         int taskId = taskIdOptional.get();
 
-        Subtask task = taskManager.getSubtask(taskId);
-        if (task == null) {
+        try {
+            Subtask task = taskManager.getSubtask(taskId);
+            sendText(exchange, gson.toJson(task));
+        } catch (TaskNotFoundException ex) {
             sendNotFound(exchange);
-            return;
         }
-
-        String json = gson.toJson(task);
-        sendText(exchange, json);
     }
 
     private void handleGetSubtasks(HttpExchange exchange) throws IOException {

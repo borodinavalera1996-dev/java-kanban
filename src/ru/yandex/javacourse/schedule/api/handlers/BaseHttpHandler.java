@@ -1,11 +1,20 @@
 package ru.yandex.javacourse.schedule.api.handlers;
 
+import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
+import ru.yandex.javacourse.schedule.manager.HistoryManager;
+import ru.yandex.javacourse.schedule.manager.TaskManager;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
-public class BaseHttpHandler {
+public abstract class BaseHttpHandler {
+
+    protected TaskManager taskManager;
+
+    protected Gson gson;
+
+    protected HistoryManager historyManager;
 
     protected void sendText(HttpExchange h, String text) throws IOException {
         byte[] resp = text.getBytes(StandardCharsets.UTF_8);
